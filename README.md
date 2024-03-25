@@ -32,4 +32,4 @@ Read about the need for intercalibration [here](https://eogdata.mines.edu/produc
  Use wrapper_region_filter_and_tessellations.py
 
 
- For more clarification you can contact me at satya.ankur@gmail.com
+ For more clarification you can contact me at i.a.mengesha@uva.nl
