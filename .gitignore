@@ -1,0 +1,11 @@
+# Ignore everything
+*
+
+# Except for these specific files and directories
+!.gitignore
+!/Data_summary/
+!/Data_summary/Tesselations/
+!/Data_summary/Tesselations/*
+
+!/notebooks/
+!/notebooks/01_summary.ipynb
