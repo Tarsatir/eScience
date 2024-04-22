@@ -7,5 +7,7 @@
 !/Data_summary/Tesselations/
 !/Data_summary/Tesselations/*
 
-!/notebooks/
-!/notebooks/01_summary.ipynb
+!/Code/
+!/Code/01_summary.ipynb
+!/Code/Tesselation.py
+
