@@ -1,15 +1,21 @@
-# Ignore everything
+# Ignore everything by default
 *
 
-# Except for these specific files and directories
+# Exclude these specific directories and their contents from being ignored
+# Allow the .gitignore file itself, README, and requirements.txt
 !.gitignore
 !README.md
 !requirements.txt
+
+# Allow specific directories and their contents
 !/Data_summary/
 !/Data_summary/Tesselations/
 !/Data_summary/Tesselations/*
-!/myenv/*
-!/Code/*
-# !/Code/01_summary.ipynb
-# !/Code/Tesselation.py
+
+!/myenv/
+!/myenv/**
+
+!/Code/
+!/Code/**
+
 
