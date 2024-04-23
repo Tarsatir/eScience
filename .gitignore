@@ -3,6 +3,8 @@
 
 # Except for these specific files and directories
 !.gitignore
+!README.md
+!requirements.txt
 !/Data_summary/
 !/Data_summary/Tesselations/
 !/Data_summary/Tesselations/*
