@@ -8,8 +8,8 @@
 !/Data_summary/
 !/Data_summary/Tesselations/
 !/Data_summary/Tesselations/*
-
-!/Code/
-!/Code/01_summary.ipynb
-!/Code/Tesselation.py
+!/myenv/*
+!/Code/*
+# !/Code/01_summary.ipynb
+# !/Code/Tesselation.py
 
