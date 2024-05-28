@@ -1,0 +1,29 @@
+#config template tess
+---
+#inputdata
+input_data_directory: "path/to/input/data/"
+
+#output root
+output_root_directory: "path/to/output/root/"
+
+
+#sampling specification
+sampling:
+  # Boolean to set constructive sampling or read in csv specified sampling
+  constructive_sampling: True  #or False
+
+  # filepath to csv file specifying sampliing if constructive sampling is false
+  sampling_file_path: "/path/to/sampling_csv_file.csv"
+
+  #Input values and ranges/options for sampling. Will be usedto comninatorically construct sampling matrix
+  sampling_matrix:
+    regions: 
+      - ["NL1", "BEL", "DEU"] #further regions can be added as additional list items
+    modes: [grid, random, density]
+    max_points: 10000
+    point_fractions: [1, 0.6, 0.3]
+    min_distances: [0.01,0.02]
+    number_ensemble_members: 10
+
+
+
