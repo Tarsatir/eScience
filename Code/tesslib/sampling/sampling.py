@@ -1,6 +1,16 @@
 #Sample generation
 import numpy as np
 
+class sample_configuration(object):
+    def __init__(self):
+        self.id=None
+        self.country_codes=None
+        self.mode=None
+        self.number_points=None
+        self.min_distance=None
+        self.ensemble_size=None
+
+
 def get_sample_configs(sampling_config):
     if sampling_config["constructive_sampling"] == True :
         #generate sampling configs
@@ -25,7 +35,14 @@ def generate_sample_configs(sampling_matrix):
                         ensemble_size=1
                     else:
                         ensemble_size=sampling_matrix["number_ensemble_members"]
-                    sample_config = {"id":idcount, "country_codes":region, "mode":mode, "number_points":npoints, "min_distance":min_distance, "ensemble_size":ensemble_size}
+                    sample_config = sample_configuration()
+                    sample_config.id=idcount
+                    sample_config.country_codes=region
+                    sample_config.mode=mode
+                    sample_config.number_points=npoints
+                    sample_config.min_distance=min_distance
+                    sample_config.ensemble_size=ensemble_size    
+                    #sample_config = {"id":idcount, "country_codes":region, "mode":mode, "number_points":npoints, "min_distance":min_distance, "ensemble_size":ensemble_size}
                     sample_configs.append(sample_config)
     return sample_configs
 
