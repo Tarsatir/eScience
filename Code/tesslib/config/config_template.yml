@@ -1,11 +1,11 @@
 #config template tess
 ---
 #inputdata
-input_data_directory: "path/to/input/data/"
+input_data_directory: "path/to/input/"
 
 #output root
-output_root_directory: "path/to/output/root/"
-
+output_root_directory: #"None"
+output_directory_name: #"None"
 
 #sampling specification
 sampling:
