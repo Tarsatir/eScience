@@ -1,7 +1,55 @@
 import rasterio
 import geopandas as gpd
+import numpy as np
+from scipy.spatial import cKDTree
+
+def get_region_geometry(regions,all_regions_file_path='../Data_summary/country_geometry/World_Continents.geojson'):
+    all_regions_file=gpd.read_file(all_regions_file_path)
+    selected_region  = all_regions_file[all_regions_file["CONTINENT"].isin(regions)]
+    region_geometry = selected_region.unary_union
+    selected_region_gdf = gpd.GeoDataFrame(geometry=[region_geometry],crs=selected_region.crs)
+    return selected_region_gdf
 
 
+
+def gdf_from_raster(rasterobject, name=None, fill_value=None, file=False, filter=None, func=None,crs=None ):
+
+    if file:
+        with rasterio.open(rasterobject) as src:
+            crs=src.crs
+            if filter is not None:
+                if filter.crs != crs:
+                    filter = filter.to_crs(crs)
+                raster_data, raster_transform = rasterio.mask.mask(src,filter.geometry,crop=True,nodata=fill_value,filled=True)
+            else:
+                raster_data = src.read(1,masked=True)
+                raster_data.fill_value = fill_value
+                raster_data.filled()
+    else:
+        raster_data = rasterobject
+
+    if func is not None:
+        raster_data = func(raster_data)
+    
+    # Extract non-zero population data points
+    coords = [(x, y) for y, row in enumerate(raster_data) 
+                for x, val in enumerate(row) if val > 0]
+    values = [raster_data[y, x] for x, y in coords]
+
+    # Convert array indices to spatial coordinates and create points
+    geometry = [Point(src.xy(y, x)) for x, y in coords]
+
+        # Create a GeoDataFrame
+    gdf = gpd.GeoDataFrame({name: values, 'geometry': geometry}, crs=crs)
+    return gdf
+    
+def prob_func(raster_data):
+    raster_data = np.power(raster_data,2)
+    tot_sum = np.sum(raster_data)
+    prob = raster_data/tot_sum
+    return prob
+
+"""
 def raster_to_gdf(raster_data_object, name='value', fill_value=0, file=False):
 
     if file:
@@ -33,7 +81,8 @@ def _raster_to_gdf(src,fill_value=0):
     # Create a GeoDataFrame
     gdf = gpd.GeoDataFrame({name: values, 'geometry': geometry}, crs=src.crs)
     return gdf
-
+"""
+    
 def append_metadata_to_gdf(gdf,metadata):
     gdf.attrs = {"metadata":metadata}  
     return gdf
@@ -42,7 +91,7 @@ def filter_gdf_by_geometry(gdf,filter_geom_gdf):
     filtered_gdf = gpd.sjoin(gdf, filter_geom_gdf, predicate='within')
     return filtered_gdf
 
-def poisson_disk_sampling(gdf, mode, weights=None, filtewr_geom=None, radius=None, n_samples=100):
+def poisson_disk_sampling(gdf, mode, weights=None, filter_geom=None, radius=None, n_samples=100):
     if mode=='density':
         points = _poisson_disk_sampling(gdf, weights=weights, radius=radius,n_samples=n_samples)
     elif mode=='random':

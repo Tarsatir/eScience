@@ -9,7 +9,8 @@ from tesslib.sampling.sampling import get_sample_configs
 from tesslib.utils.utils import raster_to_gdf
 from tesslib.utils.utils import poisson_disk_sampling
 from tesslib.io.output import set_output_dir
-from tesslib.utils.utils import raster_to_gdf
+from tesslib.utils.utils import gdf_from_raster
+from tesslib.utils.utils import get_region_geometry
 
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())

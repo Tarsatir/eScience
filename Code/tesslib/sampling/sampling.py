@@ -31,7 +31,7 @@ def generate_sample_configs(sampling_matrix,config_file=None):
             for fraction in sampling_matrix["point_fractions"]:
                 for min_distance in sampling_matrix["min_distances"]:
                     idcount+=1
-                    npoints=np.ceil(sampling_matrix["max_points"]*fraction)
+                    npoints=np.ceil(sampling_matrix["max_points"]*fraction).astype('int')
                     if mode == "grid":
                         ensemble_size=1
                     else:

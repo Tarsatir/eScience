@@ -1,28 +1,28 @@
 # Import relevant packages
 import numpy as np
 import pandas as pd
-import random
-import PIL
+#import random
+#import PIL
 import rasterio
-import shapefile
+#import shapefile
 import geopandas as gpd
-import matplotlib.pyplot as plt
-from PIL import Image
+#import matplotlib.pyplot as plt
+#from PIL import Image
 from pyproj import Transformer
 from rasterio import features
 from rasterio.enums import Resampling
 from rasterio.mask import mask, raster_geometry_mask
 from rasterio.plot import show
-from shapely.geometry import Polygon, MultiPolygon, mapping
-from skimage.measure import block_reduce
-from matplotlib.collections import PatchCollection
-from matplotlib.colors import Normalize
-from matplotlib.colors import LogNorm
-from bridson import poisson_disc_samples
-import matplotlib.patches as patches
-import scienceplots 
+from shapely.geometry import Polygon, MultiPolygon, mapping, Point
+#from skimage.measure import block_reduce
+#from matplotlib.collections import PatchCollection
+#from matplotlib.colors import Normalize
+#from matplotlib.colors import LogNorm
+#from bridson import poisson_disc_samples
+#import matplotlib.patches as patches
+#import scienceplots 
 import os 
-from shapely.geometry import Point
+#from shapely.geometry import Point
 import pyproj
 from scipy.spatial import cKDTree
 from scipy.spatial import Voronoi

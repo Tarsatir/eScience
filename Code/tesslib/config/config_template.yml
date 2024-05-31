@@ -4,8 +4,8 @@
 input_data_directory: "path/to/input/"
 
 #output root
-output_root_directory: #"None"
-output_directory_name: #"None"
+output_root_directory: "../testout" #"None"
+output_directory_name: "test" #"None"
 
 #sampling specification
 sampling:
@@ -18,10 +18,10 @@ sampling:
   #Input values and ranges/options for sampling. Will be usedto comninatorically construct sampling matrix
   sampling_matrix:
     regions: 
-      - ["NL1", "BEL", "DEU"] #further regions can be added as additional list items
-    modes: [grid, random, density]
-    max_points: 10000
-    point_fractions: [1, 0.6, 0.3]
+      - ["Europe"] #["NL1", "BEL", "DEU"] #further regions can be added as additional list items
+    modes: [grid,random, density]
+    max_points: 500
+    point_fractions: [1., 0.6, 0.3]
     min_distances: [0.01,0.02]
     number_ensemble_members: 10
 
