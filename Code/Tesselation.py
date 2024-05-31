@@ -66,6 +66,21 @@ def get_combined_country_geometry(country_codes):
     combined_geo_df = gpd.GeoDataFrame(geometry=[union_geom], crs=filtered_countries.crs)
     return combined_geo_df
 
+def get_continent_geometry(continent_name, continent_shapefile_path):
+    """
+    Parameters:
+    continent_name (str): Name of the continent.
+    Returns:
+    geopandas.GeoDataFrame: GeoDataFrame containing the geometry for the specified continent, with CRS set.
+    """
+    # Load the continent GeoJSON file
+    continent_shapefile = gpd.read_file(continent_shapefile_path)
+    
+    # Filter the shapefile for the continent of interest
+    filtered_continent = continent_shapefile[continent_shapefile['CONTINENT'] == continent_name]
+    
+    # Return the filtered GeoDataFrame
+    return filtered_continent
 
 def visualize_geometry(geometry):
     """
@@ -201,7 +216,7 @@ def poisson_disk_sampling_with_geodf(geo_df, radius, n_samples=100):
 
 
 def visualize_with_population(points_gdf, raster_path):
-    fig, ax = plt.subplots(figsize=(4, 4))
+    fig, ax = plt.subplots(figsize=(10, 10))
     with rasterio.open(raster_path) as raster:
         # Display the raster data with logarithmic normalization using LogNorm
         rasterio.plot.show(raster, ax=ax, cmap='viridis', norm=LogNorm(), title="Population Density with Sampling Points")
@@ -255,11 +270,11 @@ def visualize_voronoi(voronoi_gdf, boundary):
     voronoi_gdf (geopandas.GeoDataFrame): GeoDataFrame of the Voronoi polygons.
     boundary (shapely.geometry): Boundary geometry used for clipping.
     """
-    fig, ax = plt.subplots(figsize=(2,2))
+    fig, ax = plt.subplots(figsize=(10,10))
     plt.style.use(['science','ieee'])
     boundary_gdf = gpd.GeoDataFrame(geometry=[boundary], crs="EPSG:4326")
     boundary_gdf.boundary.plot(ax=ax, color="blue", linewidth=1)
-    voronoi_gdf.plot(ax=ax, alpha=0.5, edgecolor='black', cmap='tab20b')
+    voronoi_gdf.plot(ax=ax, alpha=0.5, edgecolor='black', cmap='viridis')
     plt.tight_layout()
     plt.show()
 
@@ -439,7 +454,6 @@ def save_tessellation_data(points, attributed_voronoi_gdf, run_number=1):
     # Save the complete GeoDataFrame with all years' data
     output_path = f'../Data_summary/Tesselations/attributed_voronoi_all_years_{run_number}.geojson'
     attributed_voronoi_gdf.to_file(output_path, driver='GeoJSON')
-
     # Save the points used for the tessellation
     points_output_path = f'../Data_summary/Tesselations/tessellation_points_{run_number}.geojson'
     points.to_file(points_output_path, driver='GeoJSON')
@@ -455,7 +469,7 @@ def plot_geographic_snapshots(location_list, raster_file_path, buffer_pixels=200
     num_locations = len(location_list)
     cols = 4  # You can choose how many columns you want
     rows = num_locations // cols + (num_locations % cols > 0)
-    fig, axs = plt.subplots(rows, cols, figsize=(10, 10))  # Adjust figsize as needed
+    fig, axs = plt.subplots(rows, cols, figsize=(10, 10), dpi=300)  # Adjust figsize as needed
     axs = axs.flatten()  # Flatten the array of axes (for easy iteration)
     
     # Function to get coordinates around a point
