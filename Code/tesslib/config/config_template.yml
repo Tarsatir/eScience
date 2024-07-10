@@ -16,14 +16,23 @@ sampling:
   sampling_file_path: "/path/to/sampling_csv_file.csv"
 
   #Input values and ranges/options for sampling. Will be usedto comninatorically construct sampling matrix
+  # sampling_matrix:
+  #   regions: 
+  #     - ["Europe"] #["NL1", "BEL", "DEU"] #further regions can be added as additional list items
+  #   modes: [grid,random, density]
+  #   max_points: 500
+  #   point_fractions: [1., 0.6, 0.3]
+  #   min_distances: [0.01,0.02]
+  #   number_ensemble_members: 10
+
   sampling_matrix:
     regions: 
-      - ["Europe"] #["NL1", "BEL", "DEU"] #further regions can be added as additional list items
-    modes: [grid,random, density]
-    max_points: 500
-    point_fractions: [1., 0.6, 0.3]
-    min_distances: [0.01,0.02]
-    number_ensemble_members: 10
+      - ["DEU"] # Only one region
+    modes: [density] # Only one mode
+    max_points: 20
+    point_fractions: [1.0] # Only one point fraction
+    min_distances: [0.02] # Only one minimum distance
+    number_ensemble_members: 1
 
 
 

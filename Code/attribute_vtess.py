@@ -30,7 +30,7 @@ import tesslib as ts
 def run(av_cid):
 
     raster_path = '../Data_summary/POP/selection.tif'
-    out_dir_path = '..'
+    out_dir_path = '../Output'
     start_year=1993
     end_year=1997
 
@@ -39,6 +39,7 @@ def run(av_cid):
 # extract sampling configuration
     sampling_config = config["sampling"]
     sample_configs = ts.get_sample_configs(sampling_config,config_file=config["config_file"])
+
 
 # Expected attributes per config:
 # * id                  (to define sample file names)
@@ -76,7 +77,7 @@ def run(av_cid):
         #tess.selection_of_tif_for_geodf(combined_geo_df, raster_path, output_raster_path)
         #gdp_gdf = tess.raster_to_gdf(output_raster_path, name=f'gdp_{year}')
         gdp_value_name = f'gdp_{year}'  # Dynamic column name for the GDP data
-        with rasterio.open(rasterpath) as src:
+        with rasterio.open(raster_path) as src:
 
             for sconfig in sample_configs:
                 if sconfig.id == av_cid:
@@ -103,9 +104,9 @@ def run(av_cid):
                             pars=config.__dict__
                             pars.update({"start_year":start_year,"end_year":year,"ensemble_member":r})
                             attributed_voronoi_gdf=ts.append_metadata_to_gdf(attributed_voronoi_gdf,pars)
-                            attributed_voronoi_gdf.to_file(f"{output_dir_path}/voronoi_{cid}_final.geojson", driver='GeoJSON')   
+                            attributed_voronoi_gdf.to_file(f"{out_dir_path}/voronoi_{cid}_final.geojson", driver='GeoJSON')   
                         else:
-                            attributed_voronoi_gdf.to_file(f"{output_dir_path}/voronoi_{cid}.geojson", driver='GeoJSON')
+                            attributed_voronoi_gdf.to_file(f"{out_dir_path}/voronoi_{cid}.geojson", driver='GeoJSON')
             else:
                 pass
 

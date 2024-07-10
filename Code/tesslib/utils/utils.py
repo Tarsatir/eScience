@@ -2,6 +2,7 @@ import rasterio
 import geopandas as gpd
 import numpy as np
 from scipy.spatial import cKDTree
+from shapely.geometry import Polygon, MultiPolygon, mapping, Point
 
 def get_region_geometry(regions,all_regions_file_path='../Data_summary/country_geometry/World_Continents.geojson'):
     all_regions_file=gpd.read_file(all_regions_file_path)
@@ -91,15 +92,17 @@ def filter_gdf_by_geometry(gdf,filter_geom_gdf):
     filtered_gdf = gpd.sjoin(gdf, filter_geom_gdf, predicate='within')
     return filtered_gdf
 
-def poisson_disk_sampling(gdf, mode, weights=None, filter_geom=None, radius=None, n_samples=100):
+def poisson_disk_sampling(gdf, probability, transform, crs, mode, weights=None, filter_geom=None, radius=None, n_samples=100):
     if mode=='density':
-        points = _poisson_disk_sampling(gdf, weights=weights, radius=radius,n_samples=n_samples)
+        #points = _poisson_disk_sampling(gdf, weights=weights, radius=radius,n_samples=n_samples)
+        points = poisson_disk_sampling_with_density(probability, transform, crs, radius=radius, n_samples=n_samples)
     elif mode=='random':
         if filter_geom is not None:
             input_gdf = filter_gdf_by_geometry(gdf,filter_geom)
         else:
             input_gdf = gdf
-        points = _poisson_disk_sampling(gdf, radius=radius,n_samples=n_samples)
+        #points = _poisson_disk_sampling(gdf, radius=radius,n_samples=n_samples)
+        points = poisson_disk_sampling_with_density(probability, transform, crs, radius=radius, n_samples=n_samples)
     else:
         raise ValueError(f'mode {mode} not supported by poisson_disk_sampling() ')
     return points
@@ -146,3 +149,29 @@ def _poisson_disk_sampling(geo_df, weights=None, radius=None, n_samples=100):
 
     # Convert list of points to GeoDataFrame
     return gpd.GeoDataFrame(geometry=[point.geometry for point in valid_points], crs=geo_df.crs)
+
+def poisson_disk_sampling_with_density(probability_distribution, transform, radius, n_samples=100):
+    flat_probs = probability_distribution.flatten()
+    num_points = len(flat_probs)
+    sampled_indices = np.random.choice(num_points, size=n_samples, p=flat_probs)
+    
+    y_coords, x_coords = np.unravel_index(sampled_indices, probability_distribution.shape)
+    points_array = np.column_stack([x_coords, y_coords])
+    
+    tree = cKDTree(points_array)
+    valid_mask = np.ones(len(points_array), dtype=bool)
+    
+    for i in range(len(points_array)):
+        if not valid_mask[i]:
+            continue
+        distances = np.linalg.norm(points_array - points_array[i], axis=1)
+        within_radius = distances < radius
+        within_radius[i] = False  # Exclude the point itself
+        valid_mask[within_radius] = False
+    
+    valid_points = points_array[valid_mask]
+    
+    geometries = [Point(rasterio.transform.xy(transform, y, x)) for x, y in valid_points]
+    gdf = gpd.GeoDataFrame(geometry=geometries)
+    
+    return gdf

@@ -151,9 +151,9 @@ def raster_to_probability_distribution(raster_path, power=1):
             raise ValueError("The sum of the raster values is 0; cannot form a probability distribution.")
         probability_distribution = raster_data / total_sum
 
-        return probability_distribution, src.transform
+        return probability_distribution, src.transform, src.crs
     
-def poisson_disk_sampling_with_density(probability_distribution, transform, radius, n_samples=100):
+def poisson_disk_sampling_with_density(probability_distribution, transform, crs,  radius, n_samples=100):
     flat_probs = probability_distribution.flatten()
     num_points = len(flat_probs)
     sampled_indices = np.random.choice(num_points, size=n_samples, p=flat_probs)
@@ -175,7 +175,8 @@ def poisson_disk_sampling_with_density(probability_distribution, transform, radi
     valid_points = points_array[valid_mask]
     
     geometries = [Point(rasterio.transform.xy(transform, y, x)) for x, y in valid_points]
-    gdf = gpd.GeoDataFrame(geometry=geometries)
+    #gdf = gpd.GeoDataFrame(geometry=geometries)
+    gdf = gpd.GeoDataFrame(geometry=geometries, crs=crs)
     
     return gdf
 

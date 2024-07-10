@@ -27,7 +27,7 @@ import sys
 
 import tesslib as ts 
 
-def run(av_cid):
+def run(av_cid=1):
 
     # Read the config file.
     config = ts.load_config('./tesslib/config/config_template.yml')
@@ -47,20 +47,26 @@ def run(av_cid):
     out_dir_root = config["output_root_directory"]
     out_dir_name = config["output_directory_name"]
     if out_dir_root is None:
-        out_dir_root = "../"
+        out_dir_root = "../Output"
 
     out_dir_path=ts.set_output_dir(out_dir_root,out_dir_name)
 
     #Use Population density of selected region to sample points 
     raster_path = '../Data_summary/POP/selection.tif'
     #raster_path = '../Data_summary/GDP/1992/1992GDP.tif'
-    probability_gdf = tess.raster_to_spatial_probability_distribution(raster_path, power=2)
+    #probability_gdf = tess.raster_to_spatial_probability_distribution(raster_path, power=2)
+    probability_distribution, transform, scr_crs = tess.raster_to_probability_distribution(raster_path, power=2)
 
     #Create far away points.
     far_points = gpd.GeoDataFrame(geometry=gpd.points_from_xy([180.0,-180,-180,180] ,[90.0, 90,-90,-90]))
 
     for sconfig in sample_configs:
-        if sconfig.id == av_cid:
+        print("first loop")
+        print(type(sconfig.id))
+        print(type(av_cid))
+        
+        if sconfig.id == int(av_cid):
+            print("first conditional")
     #Country code can be found in the folder "Data_summary/country_geometry" in the file "Country_codes.csv"
     #In the same folder we have the shapefiles for the countries as well
     
@@ -75,16 +81,18 @@ def run(av_cid):
     #tess.get_pop_density_for_geodf(combined_geo_df)
     
             for r in range(sconfig.ensemble_size):
+                print("second loop")
                 cid = f'S{sconfig.id}_R{r}'
         
                 if sconfig.mode == 'grid':
                     #TODO implement grid sampling
                     points = tess.grid_sampling_with_geodf(size=sconfig.radius)
                 elif sconfig.mode == 'density':
-                    points = ts.poisson_disk_sampling(probability_gdf, sconfig.mode, weights='probability', radius=sconfig.min_distance, n_samples=sconfig.number_points)
+                    points = ts.poisson_disk_sampling(combined_geo_df_boundary, probability_distribution, transform, scr_crs, sconfig.mode, weights='probability', radius=sconfig.min_distance, n_samples=sconfig.number_points)
+                    #points = tess.poisson_disk_sampling_with_density(probability_distribution,transform, radius=0.5, n_samples=100)
                 elif config.mode == 'random':
                     #TODO implement ramdom PD sampling
-                    points = ts.poisson_disk_sampling(probability_gdf, sconfig.mode, radius=sconfig.min_distance, filter_geom=combined_geo_df, n_samples=sconfig.number_points)
+                    points = ts.poisson_disk_sampling(combined_geo_df_boundary, probability_distribution, transform, sconfig.mode, scr_crs, radius=sconfig.min_distance, filter_geom=combined_geo_df, n_samples=sconfig.number_points)
                 else:
                     raise ValueError('specified mode value is not supported')
 

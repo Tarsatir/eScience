@@ -15,7 +15,7 @@ class sample_configuration(object):
 def get_sample_configs(sampling_config,config_file=None):
     if sampling_config["constructive_sampling"] == True :
         #generate sampling configs
-        print("reached")
+        #print("reached")
         sample_configs= generate_sample_configs(sampling_config["sampling_matrix"],config_file=config_file)
     else:
         #read sampling configs from file
