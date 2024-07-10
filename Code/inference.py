@@ -35,10 +35,55 @@ import matplotlib.cm as cm
 import matplotlib.colors as mcolors
 import leidenalg as la
 import igraph as ig
+import cpnet
 
 
 from idtxl.data import Data
 import numpy as np
+
+def compute_and_save_lagged_correlations(file_path, output_dir):
+    # Read the file
+    gdf = gpd.read_file(file_path)
+    
+    # Select only numeric columns
+    numeric_gdf = gdf.select_dtypes(include=[float, int])
+    
+    # Drop the population column
+    if 'population' in numeric_gdf.columns:
+        numeric_gdf = numeric_gdf.drop(columns=['population'])
+    
+    # Create output directory if it doesn't exist
+    os.makedirs(output_dir, exist_ok=True)
+    
+    # Process each time series independently
+    for column in numeric_gdf.columns:
+        # Extract the time series
+        time_series = numeric_gdf[[column]]
+        
+        for lag in range(-4, 5):  # Including negative lags
+            if lag == 0:
+                relative_diff_ts = time_series.pct_change(periods=1)
+            else:
+                # Calculate the differences between time steps
+                diff_ts = time_series.diff(periods=abs(lag))
+                # Compute relative differences
+                relative_diff_ts = time_series.pct_change(periods=abs(lag))
+
+            transposed_ts = relative_diff_ts.T
+
+            # Calculate the correlation matrix of the transposed DataFrame
+            row_correlation_matrix = transposed_ts.corr()
+
+            # Set correlation values below abs(0.85) to 0
+            adjusted_corr_m = row_correlation_matrix.applymap(lambda x: 0 if abs(x) < 0.85 else x)
+
+            # Delete first row and column
+            adjusted_corr_m = adjusted_corr_m.iloc[1:, 1:]
+
+            # Save the adjusted correlation matrix
+            lag_label = f'lag_{lag}' if lag >= 0 else f'neg_lag_{abs(lag)}'
+            output_file = os.path.join(output_dir, f'adjusted_corr_matrix_{column}_{lag_label}.csv')
+            adjusted_corr_m.to_csv(output_file)
 
 def compute_MI(data_array):
     """
@@ -677,6 +722,37 @@ def BY_correction(p_value_matrix, alpha=0.05):
         corrected_significance_matrix = p_value_matrix <= significant_threshold
 
     return corrected_significance_matrix
+
+def classify_core_periphery(te_matrix):
+    """
+    Classifies nodes in a graph as core or periphery based on the adjacency matrix.
+
+    Parameters:
+    te_matrix (np.ndarray): Adjacency matrix of the graph.
+
+    Returns:
+    dict: Dictionary of nodes with core/periphery classification.
+    """
+    # Initialize the algorithm
+    algorithm = cpnet.KM_config()
+    
+    # Create a graph from the adjacency matrix
+    G = nx.from_numpy_array(te_matrix)
+    
+    # Detect core-periphery structure
+    algorithm.detect(G)
+    
+    # Get the coreness classification
+    coreness = algorithm.get_coreness()
+    
+    # Create the attributes dictionary
+    attributes = {}
+    for node in G.nodes():
+        attributes[node] = {
+            'core_periphery_classification': coreness[node]
+        }
+    
+    return attributes
 
 
 def create_dataframe_from_voronoi(voronoi_gdf_path):
