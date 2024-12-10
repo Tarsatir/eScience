@@ -34,5 +34,7 @@ sampling:
     min_distances: [0.02] # Only one minimum distance
     number_ensemble_members: 1
 
+    #ncombs combinations of different parameters for problem. by multiplying all len of arrays (only array withone another)
+
 
 

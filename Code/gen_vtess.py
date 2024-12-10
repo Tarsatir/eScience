@@ -116,5 +116,7 @@ def run(av_cid=1):
             pass
 
 if __name__ == "__main__":
-    av_cid = sys.argv[1]
+    av_cid = sys.argv[1] # command line argument passed to the scirpt is passed to run function
     run(av_cid)
+
+    #invoces main rather than imports. in order to just run the scritp 
