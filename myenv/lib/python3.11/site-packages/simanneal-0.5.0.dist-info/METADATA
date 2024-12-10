@@ -1,0 +1,19 @@
+Metadata-Version: 2.1
+Name: simanneal
+Version: 0.5.0
+Summary: Simulated Annealing in Python
+Home-page: https://github.com/perrygeo/simanneal
+Author: Matthew Perry
+Author-email: perrygeo@gmail.com
+License: BSD
+Platform: UNKNOWN
+
+`simanneal` is a python implementation of the
+[simulated annealing optimization](http://en.wikipedia.org/wiki/Simulated_annealing) technique.
+
+Simulated annealing is used to find a close-to-optimal solution among an
+extremely large (but finite) set of potential solutions. It is particularly
+useful for [combinatorial optimization](http://en.wikipedia.org/wiki/Combinatorial_optimization)
+problems defined by complex objective functions that rely on external data.
+
+

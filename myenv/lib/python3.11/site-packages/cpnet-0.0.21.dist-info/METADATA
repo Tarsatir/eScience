@@ -1,0 +1,29 @@
+Metadata-Version: 2.1
+Name: cpnet
+Version: 0.0.21
+Summary: Algorithm for finding multiple core-periphery pairs in networks
+Home-page: https://github.com/skojaku/core-periphery-detection
+Author: Sadamori Kojaku
+Author-email: freesailing4046@gmail.com
+License: MIT
+Keywords: network core-periphery structure
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Software Development
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+License-File: LICENSE
+Requires-Dist: networkx (>=2.0)
+Requires-Dist: numpy (>=1.16.5)
+Requires-Dist: simanneal (>=0.4.2)
+Requires-Dist: scipy (>=1.5.2)
+Requires-Dist: numba (>=0.50.0)
+Requires-Dist: joblib (>=0.16.0)
+Requires-Dist: plotly (>=4.10.0)
+Requires-Dist: seaborn (>=0.11.0)
+Requires-Dist: pandas (>=1.1.0)
+Requires-Dist: tqdm (>=4.49.0)
+
+Algorithm for finding multiple core-periphery pairs in networks

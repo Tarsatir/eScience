@@ -1,0 +1,20 @@
+{
+"type": "FeatureCollection",
+"name": "attributed_points",
+"features": [
+{ "type": "Feature", "properties": { "partition": 0, "centrality": 1.9667839014771033e-05 }, "geometry": { "type": "Point", "coordinates": [ 11.569583302050008, 48.153750008760007 ] } },
+{ "type": "Feature", "properties": { "partition": 1, "centrality": 0.52272072536454672 }, "geometry": { "type": "Point", "coordinates": [ 5.786249991850008, 51.845416660660007 ] } },
+{ "type": "Feature", "properties": { "partition": 3, "centrality": 4.5144122892897316e-28 }, "geometry": { "type": "Point", "coordinates": [ 16.302916616450009, 48.22041667516001 ] } },
+{ "type": "Feature", "properties": { "partition": 1, "centrality": 0.52272072536454672 }, "geometry": { "type": "Point", "coordinates": [ 8.411249981350007, 49.328750004060005 ] } },
+{ "type": "Feature", "properties": { "partition": 1, "centrality": 0.28184519870420033 }, "geometry": { "type": "Point", "coordinates": [ 4.402916664050008, 50.853749997960008 ] } },
+{ "type": "Feature", "properties": { "partition": 4, "centrality": 4.5144122892897316e-28 }, "geometry": { "type": "Point", "coordinates": [ 13.402916628050008, 52.428749991660005 ] } },
+{ "type": "Feature", "properties": { "partition": 0, "centrality": 1.2155392996389742e-05 }, "geometry": { "type": "Point", "coordinates": [ 8.094583315950008, 48.512083340660006 ] } },
+{ "type": "Feature", "properties": { "partition": 2, "centrality": 8.1324422015368092e-12 }, "geometry": { "type": "Point", "coordinates": [ 6.902916654050008, 50.945416664260009 ] } },
+{ "type": "Feature", "properties": { "partition": 5, "centrality": 4.5144122892897316e-28 }, "geometry": { "type": "Point", "coordinates": [ 11.069583304050008, 49.428750003660006 ] } },
+{ "type": "Feature", "properties": { "partition": 2, "centrality": 8.1324422015368092e-12 }, "geometry": { "type": "Point", "coordinates": [ 8.936249979250007, 53.062083322460012 ] } },
+{ "type": "Feature", "properties": { "partition": 1, "centrality": 0.6116284570284144 }, "geometry": { "type": "Point", "coordinates": [ 5.061249994750008, 52.120416659560007 ] } },
+{ "type": "Feature", "properties": { "partition": 0, "centrality": 1.9667839014771033e-05 }, "geometry": { "type": "Point", "coordinates": [ 4.294583331150008, 52.078749993060008 ] } },
+{ "type": "Feature", "properties": { "partition": 0, "centrality": 1.2155392996389742e-05 }, "geometry": { "type": "Point", "coordinates": [ 6.536249988850008, 51.345416662660007 ] } },
+{ "type": "Feature", "properties": { "partition": 6, "centrality": 4.5144122892897316e-28 }, "geometry": { "type": "Point", "coordinates": [ 10.011249974950008, 53.528749987260007 ] } }
+]
+}
